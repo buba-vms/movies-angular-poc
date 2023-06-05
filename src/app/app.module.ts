@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { movieReducer } from './ngrx/movie.reducer';
 import { FooterComponent } from './footer/footer.component';
+import { favoriteReducer } from './ngrx/favorite.reducer';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { FooterComponent } from './footer/footer.component';
   imports: [
     BrowserModule,
     FormsModule,
-    StoreModule.forRoot({ movie: movieReducer }),
+    StoreModule.forRoot({ movie: movieReducer, favorite: favoriteReducer }),
   ],
   providers: [],
   bootstrap: [AppComponent],

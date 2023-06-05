@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { searchMovie } from '../ngrx/movie.actions';
 import { MovieState } from '../ngrx/movie.reducer';
 import axios from 'axios';
+import { addFavorite } from '../ngrx/favorite.actions';
 
 @Component({
   selector: 'app-movie-card',
@@ -15,26 +16,28 @@ export class MovieCardComponent {
   favoriteMovies: string[] = [];
 
   movie$: Observable<MovieState>;
-  constructor(private store: Store<{ movie: MovieState }>) {
+  favorite$: Observable<MovieState[]>;
+
+  constructor(
+    private store: Store<{ movie: MovieState; favorite: MovieState[] }>
+  ) {
     this.movie$ = store.select('movie');
     if (this.movie$) {
       this.movie$;
     }
+    this.favorite$ = store.select('favorite');
+    if (this.favorite$) {
+      this.favorite$;
+    }
   }
 
-  setIsFavorite(movieTitle: string) {
+  setIsFavorite(movieTitle: MovieState) {
     this.isFavorite = !this.isFavorite;
+    const payload = movieTitle;
     if (this.isFavorite) {
-      this.favoriteMovies.push(movieTitle);
+      this.store.dispatch(addFavorite({ payload }));
     }
     if (!this.isFavorite) {
-      const index = this.favoriteMovies.indexOf(movieTitle);
-      console.log(index);
-      for (var i = this.favoriteMovies.length - 1; i >= 0; i--) {
-        if (this.favoriteMovies[i] === movieTitle) {
-          this.favoriteMovies.splice(i, 1);
-        }
-      }
     }
     console.log(this.favoriteMovies);
   }
